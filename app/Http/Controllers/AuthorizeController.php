@@ -10,8 +10,6 @@ class AuthorizeController extends Controller
 {
     public function authorize_form()
     {
-        dd(Auth::check());
-
         return view('authorize_form');
     }
 
@@ -25,7 +23,7 @@ class AuthorizeController extends Controller
                 'password' => $validated['password']
             ];
 
-        if (Auth::attempt($credentials, true)) {
+        if (Auth::attempt($credentials)) {
 
             $log =
                 [
