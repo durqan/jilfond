@@ -132,6 +132,11 @@
     <div class="container">
         <div class="logo">Форма авторизации</div>
         <div class="login-item">
+            @if(isset($error))
+                <div class="alert alert-danger" role="alert" style="width: 20%">
+                    {{$error}}
+                </div>
+            @endif
             <form action="authorize" method="post" class="form form-login">
                 <div class="form-field">
                     <input id="login-username" type="text" class="form-input" placeholder="Электронная почта" name="email" required>
