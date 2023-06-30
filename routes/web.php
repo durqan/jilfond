@@ -17,7 +17,7 @@ use App\Http\Controllers\HomePageController;
 */
 
 Route::get('/', [AuthorizeController::class, 'authorize_form'])->name('login');
-Route::get('/home_page', [HomePageController::class, 'home_page']);
+Route::get('/home_page', [HomePageController::class, 'home_page'])->middleware('auth');
 Route::get('/reg', [RegistrationController::class, 'registration_form']);
 Route::post('/do_reg', [RegistrationController::class, 'action_registration']);
 Route::post('/authorize', [AuthorizeController::class, 'action_authorization']);

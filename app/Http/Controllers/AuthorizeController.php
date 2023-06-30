@@ -23,7 +23,7 @@ class AuthorizeController extends Controller
                 'password' => $validated['password']
             ];
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, true)) {
 
             $log =
                 [
@@ -34,8 +34,7 @@ class AuthorizeController extends Controller
 
             Logs::insert($log);
             $request->session()->regenerate();
-            echo json_encode('success');
-            exit;
+            return redirect()->intended('home_page');
         }
 
         echo json_encode('error_auth');
