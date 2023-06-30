@@ -9,6 +9,8 @@
         crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
         crossorigin="anonymous"></script>
+<script src="https://use.typekit.net/rjb4unc.js"></script>
+<script>try{Typekit.load({ async: true });}catch(e){}</script>
 <body>
 @yield('authorize')
 @yield('registration')
