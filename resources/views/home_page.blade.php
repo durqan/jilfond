@@ -42,7 +42,7 @@
                                   name="text"></textarea>
                         <button class="btn btn-outline-secondary" type="submit">Поделиться</button>
                         <div class="input-group mt-3">
-                            <input type="file" class="form-control" multiple name="images">
+                            <input type="file" class="form-control" multiple name="images[]">
                         </div>
                     </div>
                 </div>
