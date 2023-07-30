@@ -18,8 +18,13 @@ use App\Http\Controllers\LogoutController;
 */
 
 Route::get('/', [AuthorizeController::class, 'authorize_form'])->name('login');
-Route::get('/home_page', [HomePageController::class, 'home_page'])->middleware('auth');
 Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
 Route::get('/reg', [RegistrationController::class, 'registration_form']);
 Route::post('/do_reg', [RegistrationController::class, 'action_registration']);
-Route::post('/authorize', [AuthorizeController::class, 'action_authorization']);
+Route::post('/authorize', [AuthorizeController::class, 'action_authorization']);;
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home_page', [HomePageController::class, 'home_page'])->name('home_page');
+    Route::post('/add_post', [HomePageController::class, 'addPost']);
+    Route::post('/delete_post', [HomePageController::class, 'deletePost']);
+});
