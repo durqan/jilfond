@@ -13,7 +13,7 @@ class Posts extends Model
 
     public function images(): HasMany
     {
-        return $this->hasMany(Images::class, 'post_id', 'id');
+        return $this->hasMany(PostsImages::class, 'post_id', 'id');
     }
 
     public function user(): HasOne

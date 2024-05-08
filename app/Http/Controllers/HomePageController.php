@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Images;
+use App\Models\PostsImages;
 use App\Models\Posts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class HomePageController extends Controller
 {
@@ -25,21 +27,48 @@ class HomePageController extends Controller
         if (empty($text))
             return $this->home_page(['error' => "Вы не заполнили текстовое поле"]);
 
-        $post =
-            [
-                'text' => $text,
-                'user_id' => $user->id
-            ];
+        $newPost = new Posts();
+        $newPost->text = $text;
+        $newPost->user_id = $user->id;
+        $newPost->save();
 
-        Posts::insert($post);
+        if (!empty($images)) {
+            foreach ($images as $image) {
 
-        return $this->home_page(['success_alert' => "Пост успешно оформлен"]);
+                if (!in_array($image->extension(), ['png', 'jpg', 'jpeg', 'svg'])) {
+                    $newPost->delete();
+                    return $this->home_page(['error' => "Не верный формат изображения " . $image->getClientOriginalName()]);
+                }
+
+                $filename = md5($image->getFilename()) . '.' . $image->extension();
+
+                if (!Storage::disk('images')->put($filename, '')) {
+                    $newPost->delete();
+                    return $this->home_page(['error' => "Ошибка загрузки файла " . $image->getClientOriginalName()]);
+                }
+
+                $newImage = new PostsImages();
+                $newImage->post_id = $newPost->id;
+                $newImage->user_id = $user->id;
+                $newImage->filename = $filename;
+                $newImage->save();
+            }
+        }
+        return redirect()->route('home_page');
     }
 
     public function deletePost(Request $request)
     {
         Posts::destroy($request['id']);
-        //Images::where('post_id', $request['id'])->delete();
+
+        $images = PostsImages::where('post_id', $request['id'])->get();
+
+        if (!empty($images)) {
+            foreach ($images as $image) {
+                Storage::disk('images')->delete($image->filename);
+            }
+            PostsImages::where('post_id', $request['id'])->delete();
+        }
 
         return redirect()->route('home_page');
     }
