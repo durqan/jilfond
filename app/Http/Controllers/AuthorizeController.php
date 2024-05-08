@@ -37,6 +37,6 @@ class AuthorizeController extends Controller
             return redirect()->intended('home_page');
         }
 
-        return view('authorize_form', ['error' => 'Не верный логин или пароль']);
+        return view('authorize_form', ['error' => 'Неверный логин или пароль']);
     }
 }

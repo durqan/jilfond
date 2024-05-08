@@ -39,7 +39,7 @@ class HomePageController extends Controller
     public function deletePost(Request $request)
     {
         Posts::destroy($request['id']);
-        Images::where('post_id', $request['id'])->delete();
+        //Images::where('post_id', $request['id'])->delete();
 
         return redirect()->route('home_page');
     }
