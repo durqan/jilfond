@@ -13,7 +13,7 @@ class HomePageController extends Controller
 {
     public function home_page(array $args = [])
     {
-        $posts = Posts::with('user')->get()->toArray();
+        $posts = Posts::with('user', 'images')->get()->toArray();
 
         return view('home_page', ['args' => $args, 'posts' => $posts]);
     }
@@ -40,9 +40,7 @@ class HomePageController extends Controller
                     return $this->home_page(['error' => "Не верный формат изображения " . $image->getClientOriginalName()]);
                 }
 
-                $filename = md5($image->getFilename()) . '.' . $image->extension();
-
-                if (!Storage::disk('images')->put($filename, '')) {
+                if (!$filename = Storage::disk('images')->put('', $image)) {
                     $newPost->delete();
                     return $this->home_page(['error' => "Ошибка загрузки файла " . $image->getClientOriginalName()]);
                 }
