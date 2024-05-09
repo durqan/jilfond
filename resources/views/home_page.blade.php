@@ -1,13 +1,20 @@
 @extends('index')
 
 @section('home_page')
-    <div style="display: flex; justify-content: space-between">
+    <div style="display: flex; justify-content: space-between; margin: 10px 10px">
         <div>
 
         </div>
-        <form action="logout">
-            <button type="submit" class="btn btn-primary">Выйти</button>
-        </form>
+        <div style="display: flex;">
+            <form action="personal_page" method="post">
+                <button type="submit" class="btn btn-success" style="margin-right: 20px">
+                    Личный кабинет
+                </button>
+            </form>
+            <form action="logout">
+                <button type="submit" class="btn btn-primary">Выйти</button>
+            </form>
+        </div>
     </div>
     <br>
     <div style="display: flex; justify-content: space-between">
@@ -59,7 +66,7 @@
         </div>
         <div style="width: 40%">
             @if(isset($posts))
-                <div class="accordion accordion-flush" id="accordionFlushExample">
+                <div class="accordion accordion-flush" id="accordionExample">
                     @foreach($posts as $post)
                         <div style="display: flex">
                             <div class="accordion-item" style="width: 80%">
@@ -67,20 +74,29 @@
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#{{$post['id']}}" aria-expanded="false"
                                             aria-controls="{{$post['id']}}">
-                                        Пост от пользователя {{$post['user']['firstname']}} {{date('Y-m-d H:i', strtotime($post['created_at']))}}
+                                        Пост от
+                                        пользователя {{$post['user']['lastname']}} {{$post['user']['firstname']}}
                                     </button>
                                 </h2>
-                                <div id="{{$post['id']}}" class="accordion-collapse collapse"
-                                     data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">{{$post['text']}}</div>
+                                <div style="float: right">
+                                    {{date('Y-m-d H:i', strtotime($post['created_at']))}}
                                 </div>
-                                @if(!empty($post['images']))
-                                    @foreach($post['images'] as $image)
-                                        <a href="{{asset('storage/images/'.$image['filename'])}}" target="_blank">
-                                            <img src="{{asset('storage/images/'.$image['filename'])}}" width="200">
-                                        </a>
-                                    @endforeach
-                                @endif
+                                <div id="{{$post['id']}}" class="accordion-collapse collapse"
+                                     data-bs-parent="#accordionExample"><br>
+                                    <div class="accordion-body" style="white-space: pre-wrap; word-break: break-all">{{$post['text']}}</div><br>
+                                    <div>
+                                        @if(!empty($post['images']))
+                                            Прикрепленные изображения<br>
+                                            @foreach($post['images'] as $image)
+                                                <a href="{{asset('storage/images/'.$image['filename'])}}"
+                                                   target="_blank">
+                                                    <img src="{{asset('storage/images/'.$image['filename'])}}"
+                                                         width="200" height="200">
+                                                </a>
+                                            @endforeach
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
                             <form action="delete_post" method="POST">
                                 <input type="hidden" name="id" value="{{$post['id']}}">

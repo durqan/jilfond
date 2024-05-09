@@ -13,5 +13,6 @@
 @yield('authorize')
 @yield('registration')
 @yield('home_page')
+@yield('personal_page')
 </body>
 </html>

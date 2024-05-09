@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthorizeController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\PersonalPageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,4 +28,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home_page', [HomePageController::class, 'home_page'])->name('home_page');
     Route::post('/add_post', [HomePageController::class, 'addPost']);
     Route::post('/delete_post', [HomePageController::class, 'deletePost']);
+    Route::post('/personal_page', [PersonalPageController::class, 'personal_page']);
 });
